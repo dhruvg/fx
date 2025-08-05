@@ -47,14 +47,9 @@ release:
     OS="$(uname -s)"
     echo "OS: $OS"
 
-    if [[ $ARCH == "x86_64" && $OS == "Linux" ]]; then
-        TARGET="x86_64-unknown-linux-musl"
-        cargo build -p fx --release --target="$TARGET"
-        cp --verbose "target/$TARGET/release/fx" "public/"
-    else
-        cargo build -p fx --release
-        cp --verbose "target/release/fx" "public/"
-    fi
+    TARGET="x86_64-unknown-linux-musl"
+    cargo build -p fx --release --target="$TARGET"
+    cp --verbose "target/$TARGET/release/fx" "public/"
 
     cat > public/Dockerfile << EOF
     FROM gcr.io/distroless/cc-debian12
@@ -71,4 +66,4 @@ release:
 serve:
     #!{{shebang}}
 
-    cargo watch -x "run -- serve --password=test-password"
+    cargo watch -x "run -- serve --password=test"
